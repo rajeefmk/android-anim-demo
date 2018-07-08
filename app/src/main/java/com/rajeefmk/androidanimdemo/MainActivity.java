@@ -1,5 +1,6 @@
 package com.rajeefmk.androidanimdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
         setupBasicAlphaAnim();
         setupCrossFadeTextView();
         setupCrossFadeTwoTextView();
+        Button propertyAnimationButton = findViewById(R.id.property_anim_button);
+        propertyAnimationButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, PropertyAnimationActivity.class));
+        });
     }
 
 
