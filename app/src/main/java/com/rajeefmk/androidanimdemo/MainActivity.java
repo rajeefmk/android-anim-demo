@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         propertyAnimationButton.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, PropertyAnimationActivity.class));
         });
+        Button drawableAnimaton = findViewById(R.id.drawable_animation);
+        drawableAnimaton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, DrawableAnimationActivity.class));
+        });
     }
 
 
