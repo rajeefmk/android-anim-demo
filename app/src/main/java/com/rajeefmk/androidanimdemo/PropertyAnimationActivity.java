@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 public class PropertyAnimationActivity extends AppCompatActivity {
 
-    Button forwardButton;
-    Button reverseButton;
-    TextView animatedTextView;
     ValueAnimator valueAnimator;
     ObjectAnimator objectAnimator;
 
@@ -22,12 +19,17 @@ public class PropertyAnimationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_property_animation);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        animatedTextView = findViewById(R.id.textview);
-        forwardButton = findViewById(R.id.forward);
-        reverseButton = findViewById(R.id.reverse);
+        setupBasicPropertyAnimatorsDemo();
+        setupViewPropertyAnimatorsDemo();
+    }
 
-        defineValueAnimator();
-        defineObjectAnimator();
+    private void setupBasicPropertyAnimatorsDemo() {
+        Button forwardButton = findViewById(R.id.forward);
+        Button reverseButton = findViewById(R.id.reverse);
+        TextView animatedTextView = findViewById(R.id.textview);
+
+        defineValueAnimator(animatedTextView);
+        defineObjectAnimator(animatedTextView);
 
         forwardButton.setOnClickListener(v -> {
             if (!valueAnimator.isRunning())
@@ -38,22 +40,30 @@ public class PropertyAnimationActivity extends AppCompatActivity {
             if (!objectAnimator.isRunning())
                 objectAnimator.start();
         });
-
-
     }
 
-    private void defineObjectAnimator() {
+    private void defineObjectAnimator(TextView animatedTextView) {
         objectAnimator = ObjectAnimator.ofFloat(animatedTextView, "translationX", 0f);
         objectAnimator.setDuration(1000);
     }
 
-    private void defineValueAnimator() {
+    private void defineValueAnimator(TextView animatedTextView) {
         valueAnimator = ValueAnimator.ofFloat(0f, 100f);
         valueAnimator.setDuration(1000);
         valueAnimator.addUpdateListener(animation -> {
             float animatedValue = (float) animation.getAnimatedValue();
             animatedTextView.setTranslationX(animatedValue);
         });
+    }
+
+    private void setupViewPropertyAnimatorsDemo() {
+        TextView viewPropTextView = findViewById(R.id.view_prop_textview);
+        Button vpForward = findViewById(R.id.view_prop_forward);
+        Button vpReverse = findViewById(R.id.view_prop_reverse);
+
+        vpForward.setOnClickListener(v -> viewPropTextView.animate().translationX(100f));
+        vpReverse.setOnClickListener(v -> viewPropTextView.animate().translationX(0f));
+
     }
 
     @Override
