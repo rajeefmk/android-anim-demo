@@ -77,4 +77,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_prop_reverse" />
 
+    <Button
+        android:id="@+id/state_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:stateListAnimator="@animator/animate_scale"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="State Anim Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_prop_textview" />
+
 </android.support.constraint.ConstraintLayout>
