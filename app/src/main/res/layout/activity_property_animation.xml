@@ -110,4 +110,25 @@
         app:layout_constraintStart_toEndOf="@+id/forward"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/xml_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="XML Animator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/state_list_anim" />
+
+    <TextView
+        android:id="@+id/xml_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="XML Animated text"
+        app:layout_constraintBaseline_toBaselineOf="@+id/xml_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/xml_button" />
+
 </android.support.constraint.ConstraintLayout>

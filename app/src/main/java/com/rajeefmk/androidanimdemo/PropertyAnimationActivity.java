@@ -1,5 +1,7 @@
 package com.rajeefmk.androidanimdemo;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
@@ -24,7 +26,9 @@ public class PropertyAnimationActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupBasicPropertyAnimatorsDemo();
         setupViewPropertyAnimatorsDemo();
+        setupXMLAnimators();
     }
+
 
     private void setupBasicPropertyAnimatorsDemo() {
         Button forwardButton = findViewById(R.id.forward);
@@ -86,6 +90,18 @@ public class PropertyAnimationActivity extends AppCompatActivity {
         vpForward.setOnClickListener(v -> viewPropTextView.animate().translationX(100f));
         vpReverse.setOnClickListener(v -> viewPropTextView.animate().translationX(0f));
 
+    }
+
+    private void setupXMLAnimators() {
+        TextView xmlTextView = findViewById(R.id.xml_textview);
+        Button xmlButton = findViewById(R.id.xml_button);
+
+        AnimatorSet animatorSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.sample_property_animator);
+        animatorSet.setTarget(xmlTextView);
+
+        xmlButton.setOnClickListener(v -> {
+            animatorSet.start();
+        });
     }
 
     @Override
