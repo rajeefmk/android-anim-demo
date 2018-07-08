@@ -1,6 +1,8 @@
 package com.rajeefmk.androidanimdemo;
 
+import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ public class PropertyAnimationActivity extends AppCompatActivity {
 
     ValueAnimator valueAnimator;
     ObjectAnimator objectAnimator;
+    ObjectAnimator rotationAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +29,13 @@ public class PropertyAnimationActivity extends AppCompatActivity {
     private void setupBasicPropertyAnimatorsDemo() {
         Button forwardButton = findViewById(R.id.forward);
         Button reverseButton = findViewById(R.id.reverse);
+        Button keyFrameRotationButton = findViewById(R.id.rotation_button);
+
         TextView animatedTextView = findViewById(R.id.textview);
 
         defineValueAnimator(animatedTextView);
         defineObjectAnimator(animatedTextView);
+        defineRotationAnimator(animatedTextView);
 
         forwardButton.setOnClickListener(v -> {
             if (!valueAnimator.isRunning())
@@ -39,6 +45,11 @@ public class PropertyAnimationActivity extends AppCompatActivity {
         reverseButton.setOnClickListener(v -> {
             if (!objectAnimator.isRunning())
                 objectAnimator.start();
+        });
+
+        keyFrameRotationButton.setOnClickListener(v -> {
+            if (!rotationAnimator.isRunning())
+                rotationAnimator.start();
         });
     }
 
@@ -54,6 +65,17 @@ public class PropertyAnimationActivity extends AppCompatActivity {
             float animatedValue = (float) animation.getAnimatedValue();
             animatedTextView.setTranslationX(animatedValue);
         });
+    }
+
+    private void defineRotationAnimator(TextView animatedTextView) {
+        //First value is the Elapsed Fraction and the second value is the TypeValue.
+        Keyframe kf0 = Keyframe.ofFloat(0f, 0f);
+        Keyframe kf1 = Keyframe.ofFloat(.5f, 360f);
+        Keyframe kf2 = Keyframe.ofFloat(1f, 0f);
+
+        PropertyValuesHolder pvhRotation = PropertyValuesHolder.ofKeyframe("rotation", kf0, kf1, kf2);
+        rotationAnimator = ObjectAnimator.ofPropertyValuesHolder(animatedTextView, pvhRotation);
+        rotationAnimator.setDuration(5000);
     }
 
     private void setupViewPropertyAnimatorsDemo() {
