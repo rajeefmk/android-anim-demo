@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
         drawableAnimaton.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, DrawableAnimationActivity.class));
         });
+        Button revealHideAnimation = findViewById(R.id.reveal_hide_button);
+        revealHideAnimation.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, RevealHideActivity.class));
+        });
     }
 
 
