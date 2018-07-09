@@ -2,15 +2,19 @@ package com.rajeefmk.androidanimdemo;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -18,7 +22,7 @@ import android.widget.TextView;
 public class RevealHideActivity extends AppCompatActivity {
 
     private int mShortAnimationDuration;
-    private boolean isShowingBack = false;
+    private TextView revealTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,57 @@ public class RevealHideActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reveal_hide);
         setupRevealHideWithCrossFade();
         setupCardFlip(savedInstanceState);
+        setupCircularReveal();
+    }
+
+    private void setupCircularReveal() {
+        Switch circularRevealSwitch = findViewById(R.id.circle_reveal_switch);
+        circularRevealSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (isChecked) {
+                        revealTextView();
+                    } else {
+                        hideTextView();
+                    }
+                }
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void hideTextView() {
+        //Getting the center of cliping circle
+        int cx = revealTextView.getWidth() / 2;
+        int cy = revealTextView.getHeight() / 2;
+
+        //Initial Radius of clipping circle;
+        float initialRadius = (float) Math.hypot(cx, cy);
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(revealTextView, cx, cy, initialRadius, 0);
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                revealTextView.setVisibility(View.INVISIBLE);
+            }
+        });
+        anim.start();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void revealTextView() {
+        //Getting the center of cliping circle
+        int cx = revealTextView.getWidth() / 2;
+        int cy = revealTextView.getHeight() / 2;
+
+        //Initial Radius of clipping circle;
+        float finalRadius = (float) Math.hypot(cx, cy);
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(revealTextView, cx, cy, 0, finalRadius);
+        revealTextView.setVisibility(View.VISIBLE);
+        anim.start();
     }
 
     private void setupCardFlip(Bundle savedInstanceState) {
@@ -69,7 +124,7 @@ public class RevealHideActivity extends AppCompatActivity {
     private void setupRevealHideWithCrossFade() {
         Switch toggleSwitch = findViewById(R.id.toggle_switch);
         ProgressBar progressBar = findViewById(R.id.progress_bar);
-        TextView revealTextView = findViewById(R.id.reveal_textview);
+        revealTextView = findViewById(R.id.reveal_textview);
         mShortAnimationDuration = getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
         toggleSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
