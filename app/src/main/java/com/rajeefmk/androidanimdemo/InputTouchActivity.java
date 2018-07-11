@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 
 public class InputTouchActivity extends AppCompatActivity
         implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
@@ -13,6 +14,7 @@ public class InputTouchActivity extends AppCompatActivity
     private static final String DEBUG_TAG = InputTouchActivity.class.getSimpleName();
 
     private GestureDetectorCompat gestureDetectorCompat;
+    private VelocityTracker mVelocityTracker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +26,45 @@ public class InputTouchActivity extends AppCompatActivity
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        handleVelocity(event);
         if (gestureDetectorCompat.onTouchEvent(event)) {
             return true;
         }
         return super.onTouchEvent(event);
+    }
+
+    private void handleVelocity(MotionEvent event) {
+        int index = event.getActionIndex();
+        int action = event.getActionMasked();
+        int pointerId = event.getPointerId(index);
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                if (mVelocityTracker == null) {
+                    mVelocityTracker = VelocityTracker.obtain();
+                } else {
+                    mVelocityTracker.clear();
+                }
+                mVelocityTracker.addMovement(event);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                mVelocityTracker.computeCurrentVelocity(1000);
+                Log.d("Velo", "X velocity: " +
+                        mVelocityTracker.getXVelocity(pointerId));
+                Log.d("Velo", "Y velocity: " +
+                        mVelocityTracker.getYVelocity(pointerId));
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mVelocityTracker.clear();
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mVelocityTracker.recycle();
     }
 
     @Override
