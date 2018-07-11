@@ -1,13 +1,20 @@
 package com.rajeefmk.androidanimdemo;
 
+import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.rajeefmk.androidanimdemo.utils.OnSwipeTouchListener;
 
@@ -25,8 +32,63 @@ public class InputTouchActivity extends AppCompatActivity
         setContentView(R.layout.activity_input_touch);
         gestureDetectorCompat = new GestureDetectorCompat(this, this);
         gestureDetectorCompat.setOnDoubleTapListener(this);
+        setupDragButton();
+        setupDropZone();
+
+    }
+
+    private void setupDropZone() {
+        FrameLayout dropZoneLayout = findViewById(R.id.drop_zone);
+        dropZoneLayout.setOnDragListener((v, event) -> {
+            int action = event.getAction();
+            switch (action) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    break;
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    v.setBackgroundColor(Color.TRANSPARENT);
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    v.setBackgroundColor(Color.RED);
+                    break;
+                case DragEvent.ACTION_DROP:
+                    View view = (View) event.getLocalState();
+                    ViewGroup owner = (ViewGroup) view.getParent();
+                    owner.removeView(view);
+                    dropZoneLayout.addView(view);
+                    view.setVisibility(View.VISIBLE);
+                    break;
+                case DragEvent.ACTION_DRAG_ENDED:
+                    v.setBackgroundColor(Color.TRANSPARENT);
+                    break;
+                default:
+                    break;
+
+            }
+            return true;
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupDragButton() {
         Button testButton = findViewById(R.id.button);
         testButton.setOnTouchListener(new OnSwipeTouchListener(InputTouchActivity.this) {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (super.onTouch(view, motionEvent)) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        ClipData data = ClipData.newPlainText("", "");
+                        View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
+                                view);
+                        view.startDrag(data, shadowBuilder, view, 0);
+                        view.setVisibility(View.INVISIBLE);
+                    }
+                    return super.onTouch(view, motionEvent);
+                } else {
+                    return false;
+                }
+            }
+
             @Override
             public void onSwipeBottom() {
                 super.onSwipeBottom();
@@ -90,7 +152,8 @@ public class InputTouchActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mVelocityTracker.recycle();
+        if (mVelocityTracker != null)
+            mVelocityTracker.recycle();
     }
 
     @Override
