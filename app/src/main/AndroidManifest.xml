@@ -20,7 +20,8 @@
         <activity android:name=".DrawableAnimationActivity" />
         <activity android:name=".RevealHideActivity" />
         <activity android:name=".InputTouchActivity" />
-        <activity android:name=".ZoomImageActivity"></activity>
+        <activity android:name=".ZoomImageActivity" />
+        <activity android:name=".LayoutChangeTransitionActivity"></activity>
     </application>
 
 </manifest>

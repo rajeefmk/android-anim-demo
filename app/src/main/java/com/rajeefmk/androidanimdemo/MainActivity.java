@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, ZoomImageActivity.class));
 
         });
+
+        Button layoutChangeTransitionButton = findViewById(R.id.layout_change_transition);
+        layoutChangeTransitionButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, LayoutChangeTransitionActivity.class));
+        });
     }
 
 
