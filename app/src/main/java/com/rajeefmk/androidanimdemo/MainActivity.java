@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         revealHideAnimation.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, RevealHideActivity.class));
         });
+        Button inputTouchButton = findViewById(R.id.input_touch_button);
+        inputTouchButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, InputTouchActivity.class));
+        });
     }
 
 

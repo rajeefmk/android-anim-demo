@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".PropertyAnimationActivity" />
         <activity android:name=".DrawableAnimationActivity" />
-        <activity android:name=".RevealHideActivity"></activity>
+        <activity android:name=".RevealHideActivity" />
+        <activity android:name=".InputTouchActivity"></activity>
     </application>
 
 </manifest>
