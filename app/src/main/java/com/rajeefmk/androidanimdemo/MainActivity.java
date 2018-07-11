@@ -1,6 +1,8 @@
 package com.rajeefmk.androidanimdemo;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +29,13 @@ public class MainActivity extends AppCompatActivity {
         setupCrossFadeTwoTextView();
         Button propertyAnimationButton = findViewById(R.id.property_anim_button);
         propertyAnimationButton.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, PropertyAnimationActivity.class));
+            Intent intent = new Intent(MainActivity.this, PropertyAnimationActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startActivity(intent,
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            } else {
+                startActivity(intent);
+            }
         });
         Button drawableAnimaton = findViewById(R.id.drawable_animation);
         drawableAnimaton.setOnClickListener(v -> {
@@ -50,7 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
         Button layoutChangeTransitionButton = findViewById(R.id.layout_change_transition);
         layoutChangeTransitionButton.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, LayoutChangeTransitionActivity.class));
+            Intent intent = new Intent(MainActivity.this, LayoutChangeTransitionActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startActivity(intent,
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            } else {
+                startActivity(intent);
+            }
         });
     }
 
