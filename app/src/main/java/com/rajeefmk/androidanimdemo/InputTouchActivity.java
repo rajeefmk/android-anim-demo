@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
+import android.widget.Button;
+
+import com.rajeefmk.androidanimdemo.utils.OnSwipeTouchListener;
 
 public class InputTouchActivity extends AppCompatActivity
         implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
@@ -22,14 +25,37 @@ public class InputTouchActivity extends AppCompatActivity
         setContentView(R.layout.activity_input_touch);
         gestureDetectorCompat = new GestureDetectorCompat(this, this);
         gestureDetectorCompat.setOnDoubleTapListener(this);
+        Button testButton = findViewById(R.id.button);
+        testButton.setOnTouchListener(new OnSwipeTouchListener(InputTouchActivity.this) {
+            @Override
+            public void onSwipeBottom() {
+                super.onSwipeBottom();
+                Log.d(DEBUG_TAG, "OnSwipeBottom");
+            }
+
+            @Override
+            public void onSwipeTop() {
+                super.onSwipeTop();
+                Log.d(DEBUG_TAG, "OnSwipeTop");
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+                Log.d(DEBUG_TAG, "OnSwipeLeft");
+            }
+
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+                Log.d(DEBUG_TAG, "OnSwipeRight");
+            }
+        });
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        handleVelocity(event);
-        if (gestureDetectorCompat.onTouchEvent(event)) {
-            return true;
-        }
+        // handleVelocity(event);
         return super.onTouchEvent(event);
     }
 
