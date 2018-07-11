@@ -41,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
         inputTouchButton.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, InputTouchActivity.class));
         });
+
+        Button zoomImageButton = findViewById(R.id.zoom_image);
+        zoomImageButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ZoomImageActivity.class));
+
+        });
     }
 
 
