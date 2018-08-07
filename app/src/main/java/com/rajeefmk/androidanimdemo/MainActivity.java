@@ -27,6 +27,15 @@ public class MainActivity extends AppCompatActivity {
         setupBasicAlphaAnim();
         setupCrossFadeTextView();
         setupCrossFadeTwoTextView();
+
+        Button customViewButton = findViewById(R.id.custom_view);
+        customViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CustomViewActivity.class));
+            }
+        });
+
         Button propertyAnimationButton = findViewById(R.id.property_anim_button);
         propertyAnimationButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, PropertyAnimationActivity.class);
